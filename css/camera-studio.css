@@ -1,0 +1,429 @@
+/* =========================================================
+   AI CAMERA STUDIO — privacy-first live camera capture UI
+   ========================================================= */
+
+.camera-studio {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    background: #000;
+    color: #fff;
+}
+
+.camera-studio.open {
+    display: block;
+}
+
+body.camera-studio-active {
+    overflow: hidden;
+}
+
+.camera-studio-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.camera-studio-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.camera-privacy-badge {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4cd964;
+    background: rgba(76, 217, 100, 0.12);
+    border: 1px solid rgba(76, 217, 100, 0.4);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.camera-close-btn {
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.camera-close-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.camera-stage {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 0;
+    background: #111;
+}
+
+.camera-stage video,
+.camera-stage canvas,
+.camera-still-preview {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.2s ease;
+}
+
+.camera-stage canvas {
+    position: absolute;
+    pointer-events: none;
+}
+
+.camera-still-preview {
+    position: absolute;
+    display: none;
+}
+
+.camera-coach {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 30px;
+    background: rgba(20, 20, 20, 0.8);
+    font-size: 15px;
+    font-weight: 600;
+    max-width: 90%;
+    text-align: center;
+    border: 2px solid rgba(255, 214, 10, 0.6);
+    transition: border-color 0.2s ease, top 0.2s ease;
+    z-index: 3;
+}
+
+.camera-coach.coach-ready {
+    border-color: #4cd964;
+    background: rgba(20, 60, 30, 0.85);
+}
+
+.camera-coach.coach-warn {
+    border-color: #ffd60a;
+}
+
+.camera-coach.coach-info {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.camera-countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 96px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.camera-quality {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(20, 20, 20, 0.85);
+    border-radius: 14px;
+    padding: 12px 16px;
+    min-width: 180px;
+}
+
+.camera-quality-score {
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.camera-quality-score small {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+.camera-quality.quality-good .camera-quality-score { color: #4cd964; }
+.camera-quality.quality-warn .camera-quality-score { color: #ffd60a; }
+.camera-quality.quality-bad .camera-quality-score { color: #ff453a; }
+
+.camera-quality-warnings {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+.camera-quality-warnings li::before {
+    content: "⚠️ ";
+}
+
+.camera-stability {
+    position: absolute;
+    top: 68px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(20, 20, 20, 0.75);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #ddd;
+    z-index: 2;
+}
+
+.camera-stability-track {
+    width: 90px;
+    height: 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.camera-stability-fill {
+    height: 100%;
+    width: 100%;
+    background: #4cd964;
+    transition: width 0.2s ease, background 0.2s ease;
+}
+
+.camera-photo-doctor {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 12px;
+}
+
+.camera-photo-doctor-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    font-size: 14px;
+}
+
+.camera-photo-doctor-score {
+    font-weight: 800;
+    font-size: 16px;
+}
+
+.camera-photo-doctor-score.score-good { color: #4cd964; }
+.camera-photo-doctor-score.score-warn { color: #ffd60a; }
+.camera-photo-doctor-score.score-bad { color: #ff453a; }
+
+.camera-photo-doctor-list {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 6px 12px;
+    font-size: 12px;
+}
+
+.camera-photo-doctor-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    color: #ddd;
+    padding: 2px 0;
+}
+
+.camera-photo-doctor-list li strong { min-width: 28px; text-align: right; }
+.camera-photo-doctor-list li.doctor-good strong { color: #4cd964; }
+.camera-photo-doctor-list li.doctor-warn strong { color: #ffd60a; }
+.camera-photo-doctor-list li.doctor-bad strong { color: #ff453a; }
+.camera-photo-doctor-list li.doctor-info strong { color: #8ecfff; }
+
+.camera-photo-doctor-fixes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.camera-fix-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+}
+
+.camera-controls {
+    background: rgba(10, 10, 10, 0.92);
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+    max-height: 46vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.camera-controls-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.camera-control {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    color: #ccc;
+    gap: 4px;
+}
+
+.camera-control select {
+    background: #222;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px 8px;
+    font-size: 14px;
+    min-height: 40px;
+}
+
+.camera-control-checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    align-self: center;
+}
+
+.camera-control-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.camera-actions,
+.camera-review-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.camera-actions button,
+.camera-review-actions button {
+    min-height: 44px;
+}
+
+.camera-shutter {
+    min-width: 160px;
+    font-size: 16px;
+    min-height: 52px;
+}
+
+.camera-error {
+    color: #ff8a80;
+    text-align: center;
+    margin: 10px 0 0;
+    font-size: 13px;
+}
+
+.camera-btn-open {
+    margin-top: 10px;
+}
+
+@media (max-width: 640px) {
+    .camera-coach {
+        font-size: 13px;
+        padding: 8px 14px;
+        top: 12px;
+    }
+    .camera-quality {
+        min-width: 140px;
+        bottom: 8px;
+        right: 8px;
+        padding: 8px 12px;
+    }
+    .camera-countdown {
+        font-size: 64px;
+    }
+    .camera-stability {
+        top: 58px;
+        padding: 5px 10px;
+    }
+    .camera-stability-track {
+        width: 64px;
+    }
+    .camera-photo-doctor-list {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    .camera-controls-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .camera-actions,
+    .camera-review-actions {
+        flex-direction: column;
+    }
+    .camera-actions button,
+    .camera-review-actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .camera-controls-row {
+        grid-template-columns: 1fr;
+    }
+    .camera-privacy-badge {
+        font-size: 11px;
+        padding: 5px 9px;
+    }
+}
+
+/* Short/landscape viewports (common when holding a phone sideways to
+   frame a passport photo): keep the video stage as large as possible
+   and shrink the controls panel into a compact, scrollable strip. */
+@media (max-height: 500px) and (orientation: landscape) {
+    .camera-studio-inner {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .camera-studio-topbar {
+        width: 100%;
+    }
+    .camera-stage {
+        flex: 1 1 60%;
+        min-width: 0;
+    }
+    .camera-controls {
+        flex: 1 1 40%;
+        max-height: none;
+        overflow-y: auto;
+    }
+    .camera-controls-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .camera-coach {
+        font-size: 12px;
+        padding: 6px 12px;
+        top: 8px;
+    }
+    .camera-stability {
+        top: 44px;
+    }
+    .camera-countdown {
+        font-size: 56px;
+    }
+}
