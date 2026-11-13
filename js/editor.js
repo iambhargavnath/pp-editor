@@ -877,7 +877,7 @@
         ctx.fillRect(0, 0, A4_WIDTH, A4_HEIGHT);
         
         const margin = 60;
-        const spacing = 60;
+        const spacing = 100;
         
         const availableWidth = A4_WIDTH - (2 * margin);
         const availableHeight = A4_HEIGHT - (2 * margin);
@@ -978,7 +978,7 @@
 
     function calculateMaxPhotos() {
         const margin = 60;
-        const spacing = 60;
+        const spacing = 100;
         const availableWidth = A4_WIDTH - (2 * margin);
         const availableHeight = A4_HEIGHT - (2 * margin);
         const photosPerRow = Math.floor((availableWidth + spacing) / (PHOTO_WIDTH + spacing));
