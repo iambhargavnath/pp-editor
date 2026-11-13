@@ -2028,3 +2028,13 @@ body { background:var(--app-bg)!important; color:var(--ink)!important; font-fami
 #batchUpload { display:block; max-width:100%; font-size:12px; }
 #downloadBatchZip,#downloadBatchPDF { display:none!important; }
 #batchUpload { position:absolute; width:1px!important; height:1px!important; opacity:0; overflow:hidden; pointer-events:none; }
+
+.app-footer {
+    width: 100%;
+    padding: 14px 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
+    margin-top: 25px;
+}
